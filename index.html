@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Global Ownership Registry Portal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #e3edf7, #ffffff);
+      text-align: center;
+      padding-top: 60px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Subtle watermark */
+    body::before {
+      content: "ULTRA OFFICIAL GOVERNMENT THING";
+      position: fixed;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-25deg);
+      font-size: 70px;
+      color: rgba(0,0,0,0.03);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .card {
+      background: white;
+      padding: 50px;
+      width: 550px;
+      margin: auto;
+      border-radius: 12px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+      position: relative;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .sub {
+      font-size: 13px;
+      color: gray;
+      margin-bottom: 25px;
+    }
+
+    input {
+      padding: 12px;
+      width: 80%;
+      font-size: 16px;
+      text-align: center;
+      letter-spacing: 2px;
+    }
+
+    button {
+      padding: 12px 25px;
+      margin-top: 15px;
+      cursor: pointer;
+      background: #1565c0;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 15px;
+    }
+
+    .result {
+      margin-top: 25px;
+      font-size: 22px;
+      font-weight: bold;
+      min-height: 40px;
+    }
+
+    .progress {
+      width: 100%;
+      background: #eee;
+      border-radius: 6px;
+      margin-top: 15px;
+      height: 18px;
+      overflow: hidden;
+      display: none;
+    }
+
+    .bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(to right, #42a5f5, #1e88e5);
+      transition: width 0.3s;
+    }
+
+    .seal {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ffd700, #b8860b);
+      margin: 20px auto;
+      animation: spin 6s linear infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      box-shadow: 0 0 25px rgba(218,165,32,0.6);
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .meta {
+      font-size: 13px;
+      margin-top: 10px;
+      color: #555;
+    }
+
+    .print-btn {
+      margin-top: 15px;
+      display: none;
+    }
+
+    .authorized {
+      font-size: 24px;
+      color: #1e88e5;
+      font-weight: bold;
+      animation: blink 1s infinite;
+      margin-top: 15px;
+    }
+
+    @keyframes blink {
+      0%, 50%, 100% { opacity: 1; }
+      25%, 75% { opacity: 0; }
+    }
+
+    .ip-log {
+      font-size: 12px;
+      color: #888;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="logo">🏛 Global Ownership Registry Authority</div>
+  <div class="sub">Department of Extremely Serious Legal Things</div>
+
+  <input type="text" id="codeInput" placeholder="Enter certificate code" maxlength="9">
+  <br>
+  <button onclick="startVerification()">Verify Certificate</button>
+
+  <div class="progress" id="progress">
+    <div class="bar" id="bar"></div>
+  </div>
+
+  <div class="result" id="result"></div>
+  <div class="meta" id="meta"></div>
+  <div class="ip-log" id="iplog"></div>
+  <button class="print-btn" id="printBtn" onclick="window.print()">Print Verified Record</button>
+</div>
+
+<audio id="successSound">
+  <source src="https://www.soundjay.com/buttons/sounds/button-4.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+  const validCode = "KOLP-9234";
+  const input = document.getElementById("codeInput");
+  const result = document.getElementById("result");
+  const meta = document.getElementById("meta");
+  const progress = document.getElementById("progress");
+  const bar = document.getElementById("bar");
+  const printBtn = document.getElementById("printBtn");
+  const sound = document.getElementById("successSound");
+  const iplog = document.getElementById("iplog");
+
+  // Auto-format XXXX-XXXX
+  input.addEventListener("input", function() {
+    let value = input.value.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
+    if (value.length > 8) value = value.substring(0, 8);
+    if (value.length > 4) value = value.substring(0, 4) + "-" + value.substring(4);
+    input.value = value;
+  });
+
+  function randomID() { return "VR-" + Math.floor(100000 + Math.random()*900000); }
+  function randomRegistry() { return "REG-" + Math.floor(1000000 + Math.random()*9000000); }
+  function randomClearance() {
+    const levels = ["Level 3", "Level 7", "Omega Tier", "Ultra Prime", "Supreme Class A"];
+    return levels[Math.floor(Math.random() * levels.length)];
+  }
+
+  function confetti() {
+    for (let i=0;i<100;i++){
+      const div=document.createElement("div");
+      div.style.position="fixed";
+      div.style.width="8px";
+      div.style.height="8px";
+      div.style.background="hsl("+Math.random()*360+",100%,50%)";
+      div.style.left=Math.random()*100+"vw";
+      div.style.top="-10px";
+      div.style.opacity=0.8;
+      div.style.transition="top 2s linear";
+      document.body.appendChild(div);
+      setTimeout(()=>div.style.top="100vh",10);
+      setTimeout(()=>div.remove(),2000);
+    }
+  }
+
+  function startVerification(codeFromURL) {
+    const formatted = codeFromURL || input.value;
+
+    result.innerHTML = "";
+    meta.innerHTML = "";
+    iplog.innerHTML = "";
+    printBtn.style.display = "none";
+    progress.style.display = "block";
+    bar.style.width = "0%";
+
+    // Fake IP logged
+    const fakeIP = "IP Logged: 192.168." + Math.floor(Math.random()*255) + "." + Math.floor(Math.random()*255);
+    iplog.innerHTML = fakeIP;
+
+    let width=0;
+    const interval=setInterval(()=>{
+      width+=10;
+      bar.style.width=width+"%";
+      if(width>=100){
+        clearInterval(interval);
+        progress.style.display="none";
+
+        if(formatted===validCode){
+          let countdown=3;
+          result.innerHTML=`<div class='loading'>Finalizing Verification in ${countdown}...</div>`;
+          const timer=setInterval(()=>{
+            countdown--;
+            if(countdown>0){
+              result.innerHTML=`<div class='loading'>Finalizing Verification in ${countdown}...</div>`;
+            } else {
+              clearInterval(timer);
+              result.innerHTML="<div class='authorized'>✔ AUTHORIZED</div>";
+              result.style.color="green";
+
+              meta.innerHTML=`
+                Verification ID: ${randomID()}<br>
+                Registry Number: ${randomRegistry()}<br>
+                Security Clearance: ${randomClearance()}<br>
+                Status: Legally Extremely Official
+                <div class="seal">OFFICIAL SEAL</div>
+              `;
+              printBtn.style.display="inline-block";
+              sound.play();
+              confetti();
+            }
+          },1000);
+        } else {
+          result.innerHTML="Certificate Not Found";
+          result.style.color="red";
+        }
+      }
+    },200);
+  }
+
+  // Auto verify from URL
+  const params = new URLSearchParams(window.location.search);
+  const urlCode = params.get("code");
+  if(urlCode) startVerification(urlCode);
+</script>
+
+</body>
+</html>
