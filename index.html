@@ -1,21 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>QR Code Feature</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Ownership Registry Portal</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-qrcode/1.0/jquery.qrcode.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        /* Styles for the verification form */
+        .verification-form { margin-bottom: 20px; }
+        input[type="text"] { width: 300px; padding: 10px; margin-right: 10px; }
+        input[type="submit"] { padding: 10px 20px; }
+        /* Seal and confetti styles */
+        .seal { display: none; margin-top: 20px; }
+        .confetti { display: none; position: fixed; top: 0; left: 0; right: 0; height: 100%; pointer-events: none; background: url('https://example.com/confetti.png'); }
+    </style>
 </head>
 <body>
-    <div id="qrcode"></div>
+    <h1>Global Ownership Registry Portal</h1>
+    <div class="verification-form">
+        <h2>Verification Form</h2>
+        <input type="text" id="verify-input" placeholder="Enter your ID" />
+        <input type="submit" id="verify-button" value="Verify" />
+    </div>
+    <div class="seal">
+        <img src="seal.png" alt="Ownership Seal" />
+    </div>
+    <div class="confetti" id="confetti"></div>
     <script>
         $(document).ready(function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('totally-real') === 'true') {
-                $('#qrcode').qrcode({
-                    text: 'TOTALLY REAL'
-                });
-            }
+            $('#verify-button').click(function() {
+                // Simulate verification
+                $('.seal').show();
+                $('#confetti').show();
+                // Add confetti effect here
+            });
         });
     </script>
+    <h2>QR Code Feature</h2>
+    <p>Scan this totally-real QR code:</p>
+    <a href="https://example.com?totally-real=true">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://example.com?totally-real=true&size=150x150" alt="QR Code" />
+    </a>
 </body>
 </html>
